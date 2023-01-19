@@ -522,14 +522,8 @@ void seamCarving(uchar3 * inPixels, int width, int height, uchar3 * outPixels, i
 
 int main(int argc, char ** argv)
 {
-	if (argc != 3 && argc != 4 && argc != 6)
-	{
-		printf("The number of arguments is invalid\n");
-		return EXIT_FAILURE;
-	}
-
 	printDeviceInfo();
-    
+    printf("argc %i\n", argc);
 	int width, height;
 	uchar3 * inPixels;
 	readPnm(argv[1], width, height, inPixels);
@@ -550,7 +544,7 @@ int main(int argc, char ** argv)
 		
     edgeDetectionByHost(grayScaleImg, width, height, edgeDetectImg);
 
-    dim3 blockSize(32, 32); // Default
+    dim3 blockSize(32, 32);
 	if (argc == 6)
 	{
 		blockSize.x = atoi(argv[3]);
@@ -560,13 +554,10 @@ int main(int argc, char ** argv)
 	uchar3 * outPixelsByDevice = (uchar3 *)malloc(scale_width * height * sizeof(uchar3));
 	seamCarving(inPixels, width, height, outPixelsByDevice, scale_width, true, blockSize);
 	
-    // Write results to files
-    char * outFileNameBase = strtok(argv[2], "."); // Get rid of extension
+    char * outFileNameBase = strtok(argv[2], ".");
     writeGrayscalePnm(edgeDetectImg, 1, width, height, concatStr(outFileNameBase, "_edgeDetect.pnm"));
 	writePnm(outPixelsByDevice, scale_width, height, concatStr(outFileNameBase, "_device.pnm"));
 
-
-	// Free memories
 	free(inPixels);
     free(grayScaleImg);
     free(edgeDetectImg);
