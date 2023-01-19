@@ -523,7 +523,6 @@ void seamCarving(uchar3 * inPixels, int width, int height, uchar3 * outPixels, i
 int main(int argc, char ** argv)
 {
 	printDeviceInfo();
-    printf("argc %i\n", argc);
 	int width, height;
 	uchar3 * inPixels;
 	readPnm(argv[1], width, height, inPixels);
@@ -545,11 +544,6 @@ int main(int argc, char ** argv)
     edgeDetectionByHost(grayScaleImg, width, height, edgeDetectImg);
 
     dim3 blockSize(32, 32);
-	if (argc == 6)
-	{
-		blockSize.x = atoi(argv[3]);
-		blockSize.y = atoi(argv[4]);
-	}	
 	
 	uchar3 * outPixelsByDevice = (uchar3 *)malloc(scale_width * height * sizeof(uchar3));
 	seamCarving(inPixels, width, height, outPixelsByDevice, scale_width, true, blockSize);
