@@ -558,7 +558,7 @@ int main(int argc, char ** argv)
 	}	
 	
 	uchar3 * outPixelsByDevice = (uchar3 *)malloc(scale_width * height * sizeof(uchar3));
-	seamCarving(inPixels, width, height, outPixelsByDevice, scale_width, true, blockSize, 2);
+	seamCarving(inPixels, width, height, outPixelsByDevice, scale_width, true, blockSize);
 	
     // Write results to files
     char * outFileNameBase = strtok(argv[2], "."); // Get rid of extension
